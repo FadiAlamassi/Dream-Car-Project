@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Offer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <main class="form-signin" id="offer"  th:fragment="add">
+            <form autocomplete="off" th:action="@{/offer/{id}(id=${isEdit}?${offer.id}:'',auctionid=${isEdit}?${offer.auction.id}:${auctionid})}"  th:object="${offer}" method="post" class="form-signin" role="form"style="margin-top: 50px; margin-bottom: 50px;">
+                <div id="header">
+                    <h1 class="logo me-auto" th:if="${isEdit}" >Edit Offer</h1>
+                    <h1 class="logo me-auto" th:unless="${isEdit}" >Add New offer</h1>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('pricePerParts')}?'has-error'">
+                    <label for="pricePerParts" class="form-label">Price Per Parts</label>
+                    <input id="pricePerParts" type="number" class="form-control" th:field="*{pricePerParts}" required/>
+                    <span th:if="${errorMessage != null}" th:utext="${errorMessage}" style="color: red"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group" th:classappend="${#fields.hasErrors('description')}?'has-error'">
+                    <label for="description" class="form-label">Description</label>
+                    <input id="description" type="text" class="form-control" th:field="*{description}" required minlength="4"/>
+                </div>
+
+                <div th:style="${loggedInUser.role == 'ADMIN'}?'':'display:none'" class="form-group" sec:authorize="hasAuthority('ADMIN')" th:classappend="${#fields.hasErrors('status')}?'has-error'">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" class="form-control" th:field="*{status}">
+                        <option th:each="status : ${statuses}"
+                                th:selected="true"
+                                th:value="${status}"
+                                th:text="${status}" />
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-secondary" type="reset">Reset</button>
+                    <a class="btn btn-secondary" type="button" th:href="@{/auction/{id}(id=${auctionid})}">Cancel</a>
+
+                </div>
+            </form>
+    </main>
+</div>
+</body>
+</html>

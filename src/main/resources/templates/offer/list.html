@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Offer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container margin-tb" th:fragment="list-offer">
+    <h1>Offers</h1>
+
+    <div class="d-flex justify-content-between mt-3 mb-5">
+        <button class="btn btn-primary" th:disabled="${auction.status == 'CLOSED'}?true:false" style='font-size:1.3rem' onclick="showOfferForm()">
+            <a style="text-decoration: none;color: inherit;" >
+                Add New Offer<i id="angle" class='fas fa-angle-down'></i>
+            </a>
+        </button>
+    </div>
+
+
+    <th:block >
+        <div th:replace="offer/add :: 'add'"></div>
+    </th:block>
+    <!--    <div id="isEdit" style="display: none" th:utext="${isEdit}"></div>-->
+
+    <div th:if="${successMessage != null}" class="alert">
+        <span class="closebtn"  onclick="this.parentElement.style.display='none';" >&times;</span>
+        <strong th:utext="${successMessage}"></strong>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>Nr.</th>
+            <th>Price per parts</th>
+            <th>Offer Description</th>
+            <th>Status</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <!--            <th>Company</th>-->
+        </tr>
+        <tr th:each="offer: ${offers}"  th:style="${offer.status == 'WON'}?'background-color:#67eb72':''">
+            <td th:text="${offerStat.index+1}+'.'"/>
+            <td th:text="${offer.pricePerParts}"/>
+            <td th:text="${offer.description}"/>
+            <td th:text="${offer.status}"/>
+            <td th:text="${offer.user.name}"/>
+            <td th:text="${offer.user.email}"/>
+            <!--            <td th:text="${offer.user.company.name}"/>-->
+
+
+            <td th:if="${loggedInUser.role == 'ADMIN'}?'':${loggedInUser.id == offer.user.id}">
+                <!--<a class="btn btn-info" role="button" th:href="@{/offer/{id}(id=${offer.id})}">Details</a>-->
+                <!--                <a th:if="${offer.user.email == #authentication.name || #authorization.expression('hasAuthority(''ADMIN'')')}"-->
+                <button  class="btn btn-success" th:disabled="${auction.status == 'CLOSED'}?true:false" style="padding:0">
+                    <a th:href="@{/offer/{id}(id=${offer.id}, edit='true',auctionid=${auction.id})}" style="text-decoration: none;color: inherit;padding: .375rem .75rem;    display: block;">
+                        Edit
+                    </a>
+                </button>
+
+                <!--                <form th:if="${offer.user.email == #authentication.name || #authorization.expression('hasAuthority(''ADMIN'')')}"-->
+                <form
+                        th:action="@{/offer/{id}/delete(id=${offer.id},auctionid=${auction.id})}"
+                        method="post" style="display: inline">
+                    <button class="btn btn-danger" type="submit" th:disabled="${auction.status == 'CLOSED'}?true:false">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<script>
+    let add = true;
+    let isEdit = document.getElementById("isEdit").innerText;
+    alert(isEdit);
+
+    if(isEdit){
+        offer.style.display='block';
+        document.getElementById('angle').classList.toggle('fa-angle-up');
+        add=false;
+    }
+
+    function show() {
+        alert("inside");
+
+        document.getElementById('angle').classList.toggle('fa-angle-up');
+        if (add) {
+            alert("dis block");
+
+            offer.style.display='block';
+            add=false;
+        } else{
+            alert("dis none");
+
+            offer.style.display='none';
+            add=true;
+        }
+    }
+</script>
+
+<!-- Vendor JS Files -->
+<script src="../assets/vendor/aos/aos.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="../assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Log in</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+        #header .logo a {
+            color:#1a1e21 !important;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body class="text-center">
+
+<p class="position-absolute top-50 start-0"><a href="/"><button class="btn btn-md btn-warning btn-block">Go To Home Page</button></a> </p>
+
+<main class="form-signin">
+    <form th:action="@{/login}" method="POST" class="form-signin" style="margin-top: 50px; margin-bottom: 50px;">
+        <div id="header">
+            <h1 class="logo me-auto"><a href="/">DreamCar</a></h1>
+        </div>
+
+        <h1 class="h3 mb-3 fw-normal">Log in</h1>
+
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required minlength="6" maxlength="30" >
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" required minlength="6" maxlength="20">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        <div align="center" th:if="${param.error}">
+            <p style="font-size: 20px; color: #FF1C19;">Invalid Email or password</p>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Log in</button>
+        <p class="mt-5 mb-3 text-muted"><a href="registration">Sign up</a></p>
+    </form>
+</main>
+</body>
+</html>

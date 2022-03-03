@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Sign up</title>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/general.css}"/>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+
+
+<!--    =======================-->
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+    <!-- Bootstrap core CSS -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #header .logo a {
+            color:#1a1e21 !important;
+        }
+         .form-signin {
+            max-width:340px !important;
+        }
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="css/signin.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+<!--    ============================-->
+
+
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+</head>
+<body>
+<p class="position-absolute top-50 start-0"><a href="/"><button class="btn btn-md btn-warning btn-block">Go To Home Page</button></a> </p>
+
+<main class="form-signin">
+    <form th:if="${successMessage == null}" class="form-signin" autocomplete="off" th:action="@{/registration}" th:object="${user}" method="post">
+        <div id="header">
+            <h1 class="logo me-auto"><a href="/">DreamCar</a></h1>
+        </div>
+
+        <h1 class="h3 mb-3 fw-normal">Create a new account</h1>
+
+        <div class="form-floating">
+                <input type="text" th:field="*{name}" class="form-control" id="username" placeholder="Your Name" minlength="4" maxlength="20" required>
+                <label for="username">Name</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="email" th:field="*{email}" class="form-control" id="floatingInput" placeholder="name@example.com" required minlength="6" maxlength="30">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating ">
+            <input type="password" th:field="*{password}" class="form-control mb-0" id="floatingPassword" placeholder="New password" required minlength="6" maxlength="20">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating">
+            <input type="tel" th:field="*{phoneNumber}" class="form-control" id="phoneNumber" placeholder="Mobile Number" required minlength="7" maxlength="11">
+            <label for="phoneNumber">Phone Number</label>
+        </div>
+
+        <div class="form-group">
+            <select id="userRole" class="form-select form-select-lg" th:field="*{role}" aria-label=".form-select-lg example" onchange="java_script_:show(this.options[this.selectedIndex].value)">
+                <option selected th:value="SUPPLIER">Supplier</option>
+                <option  th:value="ADMIN">Admin</option>
+            </select>
+        </div>
+        <div id="company" class="form-floating mb-3">
+            <input type="text" th:field="*{company}" class="form-control" id="supplierCompany" placeholder="Company Name">
+            <label for="supplierCompany">Company Name</label>
+        </div>
+
+        <span th:utext="${errorMessage}" style="color: red"></span>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
+        <p class="mt-5 mb-3 text-muted"><a href="login">Already have an account?</a> </p>
+    </form>
+    <h2 class="h3 mb-3 fw-normal margin-tb" th:utext="${successMessage}"></h2>
+        <form th:if="${successMessage != null}" th:action="@{/login}" method="get">
+        <button class="w-100 btn btn-lg btn-primary" name="login" type="submit">Log in page</button>
+    </form>
+</main>
+
+<script>
+    function show(role) {
+        if (role == "ADMIN") {
+            company.style.display='none';
+        } else{
+            company.style.display='block';
+        }
+    }
+</script>
+</body>
+
+</html>

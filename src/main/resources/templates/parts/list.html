@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Parts Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{../css/general.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Favicons -->
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/style1.css" rel="stylesheet">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======= Header ======= -->
+<th:block >
+    <div th:replace="/header :: 'header'"></div>
+</th:block>
+<!-- End Header -->
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="height: 30vh;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                <h1>List of Parts</h1>
+            </div>
+        </div>
+    </div>
+
+</section><!-- End Hero -->
+
+<div class="container margin-tb">
+
+    <div class="d-flex justify-content-between mt-3 mb-5" >
+        <h1 th:inline="text" style="text-transform: capitalize">Welcome <span th:utext="${loggedInUser.name}"></span></h1>
+        <a th:if="${loggedInUser.role == 'ADMIN'}" role="button" class="btn btn-primary" style='font-size:1.3rem' type="button"  onclick="show()">
+            Add/Edit Parts <i id="angle" class='fas fa-angle-down'></i>
+        </a>
+    </div>
+
+    <th:block th:if="${loggedInUser.role == 'ADMIN'}">
+        <div th:replace="parts/add :: 'add'"></div>
+    </th:block>
+    <div id="isEdit" style="display: none" th:utext="${isEdit}"></div>
+
+    <div th:if="${successMessage != null}" class="alert">
+        <span class="closebtn"  onclick="this.parentElement.style.display='none';" >&times;</span>
+        <strong th:utext="${successMessage}"></strong>
+    </div>
+
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" th:each="part: ${parts}">
+            <div class="card h-100" style="padding-bottom: 20px;">
+                <img th:src="${part.imageUrl}" class="card-img-top" style="max-height: 250px" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${part.name}">Card title</h5>
+                    <p class="card-text" th:text="${part.description}">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                    <div class="row" style="position:absolute;bottom:10px" th:if="${loggedInUser.role == 'ADMIN'}">
+                        <form th:action="@{/parts/{id}(id=${part.id}, delete='true')}" method="post" style="display: inline">
+                            <a role="button" class="btn btn-success" th:href="@{/parts/{id}(id=${part.id}, edit='true')}">
+                                Edit
+                            </a>
+                            <button class="btn btn-danger" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Nr.</th>
+            <th>Parts Name</th>
+            <th>Parts Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="part: ${parts}">
+            <td th:text="${partStat.index+1}+'.'">Nr</td>
+            <td th:text="${part.name}">name</td>
+            <td th:text="${part.description}">description</td>
+            <td th:if="${loggedInUser.role == 'ADMIN'}" style="min-width: 150px">
+                <a role="button" class="btn btn-success" th:href="@{/parts/{id}(id=${part.id}, edit='true')}">
+                    Edit
+                </a>
+                <form th:action="@{/parts/{id}(id=${part.id}, delete='true')}" method="post" style="display: inline">
+                    <button class="btn btn-danger" type="submit">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+<th:block >
+    <div th:replace="/footer :: 'footer'"></div>
+</th:block>
+
+<script>
+    let add = true;
+    let isEdit = document.getElementById("isEdit").innerText;
+
+    if(isEdit){
+        parts.style.display='block';
+        document.getElementById('angle').classList.toggle('fa-angle-up');
+        add=false;
+    }
+    function show() {
+        document.getElementById('angle').classList.toggle('fa-angle-up');
+        if (add) {
+            parts.style.display='block';
+            add=false;
+        } else{
+            parts.style.display='none';
+            add=true;
+        }
+    }
+</script>
+<!-- Vendor JS Files -->
+<script src="../assets/vendor/aos/aos.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+<script src="../assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

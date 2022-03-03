@@ -1,0 +1,24 @@
+<fieldset  id="parts" style="display: none" th:fragment="add">
+    <legend th:if="${isEdit}" >Edit Parts</legend>
+    <legend th:unless="${isEdit}" >Add New Parts</legend>
+<div  class="row">
+    <form autocomplete="off" th:action="@{/parts/{id}(id=${isEdit}?${part.id}:'')}" th:object="${part}" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="partsName" class="form-label">Parts Name</label>
+            <input type="text" th:field="*{name}" class="form-control" id="partsName" required minlength="3" maxlength="20">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" th:field="*{description}" placeholder="Description the parts here..." id="partsDescription" style="height: 100px" required minlength="4"></textarea>
+            <label for="partsDescription">Parts description</label>
+        </div>
+        <div class="form-group">
+            <label for="partsImage" class="form-label">Image Url</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" id="partsImage" required>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-secondary" type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+</fieldset>
