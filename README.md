@@ -9,6 +9,7 @@ DreamCar is a system that allows the customer (DreamCar) and the supplier to log
 
 # How to run
 This project implemented on IntelliJ IDEA.
-First Clone this repo, and open the cloned repo by IntelliJ IDEA.
-Then you have to setup you database by creating MySQL database and then in the application.properties file you can add your database details to link it with the project, then you can run the project without any problem.
+
+First Clone this repo, and open the cloned repo by IntelliJ IDEA.  
+Then you have to setup you database by creating MySQL database and then in the application.properties file you can add your database details to link it with the project, then you can run the project without any problem.  
 If you want to use email service you will find the source code in the directory ***config*** file name EmailServiceImpl, inside this file you have to replace tags with the sender and its password so this service work proprely.
